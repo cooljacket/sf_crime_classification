@@ -47,4 +47,3 @@ def saveResult(fileName, ids, labels):
 def display(x):
 	for i in range(0, 10):
 		print(x[i])
-

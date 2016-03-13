@@ -1,5 +1,6 @@
 #encoding:utf-8
 from sklearn import metrics
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
@@ -21,9 +22,9 @@ if __name__ == '__main__':
 	train_x = preprocessing.scale(train_x)
 	test_x = preprocessing.scale(test_x)
 
-	model = LogisticRegression()
+	model = RandomForestClassifier(n_jobs=-1)
 	model.fit(train_x, train_y)
 	print(model)
 
 	predicted = model.predict(test_x)
-	utils.saveResult('results/result_logRes.csv', test_id, predicted)
+	utils.saveResult('results/result_RF.csv', test_id, predicted)
