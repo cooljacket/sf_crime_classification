@@ -20,10 +20,8 @@ if __name__ == '__main__':
 	utils.display(train_x)
 
 	# normalize the data attributes
-	# train_x = preprocessing.scale(train_x)
-	# test_x = preprocessing.scale(test_x)
-	# utils.Min_Max_Norm(train_x)
-	# utils.Min_Max_Norm(test_x)
+	utils.Z_score_Norm(train_x)
+	utils.Z_score_Norm(test_x)
 
 	utils.display(train_x)
 	print('begin')
@@ -33,4 +31,4 @@ if __name__ == '__main__':
 	print(model)
 
 	probs = model.predict_proba(test_x)
-	utils.saveResult('results/result_logRes.csv', probs)
+	utils.saveResult('results/result_logResZ.csv', probs)

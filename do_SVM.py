@@ -1,6 +1,6 @@
 #encoding:utf-8
 from sklearn import metrics
-from sklearn.svm import SVC, LinearSVC
+from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
@@ -20,17 +20,15 @@ if __name__ == '__main__':
 	utils.display(train_x)
 
 	# normalize the data attributes
-	# train_x = preprocessing.scale(train_x)
-	# test_x = preprocessing.scale(test_x)
-	# utils.Min_Max_Norm(train_x)
-	# utils.Min_Max_Norm(test_x)
+	utils.Min_Max_Norm(train_x)
+	utils.Min_Max_Norm(test_x)
 
 	utils.display(train_x)
 	print('begin')
-
-	model = LogisticRegression()
+	
+	model = SVC(probability=True)
 	model.fit(train_x, train_y)
 	print(model)
 
 	probs = model.predict_proba(test_x)
-	utils.saveResult('results/result_logRes.csv', probs)
+	utils.saveResult('results/result_SVM_nolog.csv', probs)

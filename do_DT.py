@@ -22,15 +22,15 @@ if __name__ == '__main__':
 	# normalize the data attributes
 	# train_x = preprocessing.scale(train_x)
 	# test_x = preprocessing.scale(test_x)
-	# utils.Min_Max_Norm(train_x)
-	# utils.Min_Max_Norm(test_x)
+	utils.Min_Max_Norm(train_x)
+	utils.Min_Max_Norm(test_x)
 
 	utils.display(train_x)
 	print('begin')
 
-	model = LogisticRegression()
+	model = DecisionTreeClassifier()
 	model.fit(train_x, train_y)
 	print(model)
 
 	probs = model.predict_proba(test_x)
-	utils.saveResult('results/result_logRes.csv', probs)
+	utils.saveResult('results/result_DT.csv', probs)

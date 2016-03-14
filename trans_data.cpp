@@ -28,14 +28,15 @@ void Init();
 
 int main() {
 	Init();
-	readTrainData("train_data.txt");
-	readTestData("test_data.txt");
+	readTrainData("data/train_data.txt");
+	readTestData("data/test_data.txt");
 	return 0;
 }
 
 
 void Init() {
 	vector<string> cats = splite(CATEGORIES_String);
+	printf("hahah, size=%d\n", int(cats.size()));
 	for (int i = 0; i < cats.size(); ++i)
 		Categories[cats[i]] = i;
 

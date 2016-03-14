@@ -48,8 +48,8 @@ def saveResult(fileName, ids, labels):
 
 if __name__ == '__main__':
 	# get X and y
-	train_x, train_y = loadDataHelper('train_data.txt')
-	test_x, test_id = loadDataHelper('test_data.txt')
+	train_x, train_y = loadDataHelper('data/train_data.txt')
+	test_x, test_id = loadDataHelper('data/test_data.txt')
 
 	# fit a SVM model to the data
 	# model = SVC()
