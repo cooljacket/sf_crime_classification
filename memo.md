@@ -7,4 +7,10 @@
 
 
 
+[The best]
+model = RandomForestClassifier(n_jobs=-1, max_depth=10, n_estimators=10, warm_start=True)
+2.51068
+
+[new way]
+gradient boosting decision tree
 

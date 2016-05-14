@@ -1,7 +1,7 @@
 #encoding:utf-8
 from sklearn import metrics
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.svm import SVC, LinearSVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
@@ -31,17 +31,8 @@ if __name__ == '__main__':
 	utils.display(train_x)
 	print('begin')
 
-	# max_depth is not suitable to be large than 10, but should not less than 7?
-	# maybe because the number of features is too less, 
-	# and the d-tree should not be split into too many branches
-
-	# but I fount that we can increase the number of the n_estimators
-	# which is the number of d-tree,
-	# max_depth=15, n_estimators=200 is the best configuration in my computer...
-	model = RandomForestClassifier(n_jobs=-1, max_depth=15, n_estimators=200, warm_start=False)
+	model = ExtraTreesClassifier(n_jobs=-1, max_depth=15, n_estimators=200, warm_start=False)
 	model.fit(train_x, train_y)
-	# modelFile = 'data/RF.model'
-	# joblib.dump(model, modelFile)
 	print(model)
 
-	utils.predict_and_save(test_x, model, 'results/result_RF.csv', blockSize=5000)
+	utils.predict_and_save(test_x, model, 'results/result_ET.csv', blockSize=50000)

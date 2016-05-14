@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from sklearn import preprocessing
 from sklearn.externals import joblib
 import utils
@@ -22,26 +23,15 @@ if __name__ == '__main__':
 	print('test size: %d %d' % (len(test_x), len(test_id)))
 
 	#normalize the data attributes
-	train_x = preprocessing.scale(train_x)
-	test_x = preprocessing.scale(test_x)
+	# train_x = preprocessing.scale(train_x)
+	# test_x = preprocessing.scale(test_x)
 
-	# I found that it is better to use the above functions to dl normalization!!!
-	# utils.Min_Max_Norm(train_x)
-	# utils.Min_Max_Norm(test_x)
 	utils.display(train_x)
 	print('begin')
 
-	# max_depth is not suitable to be large than 10, but should not less than 7?
-	# maybe because the number of features is too less, 
-	# and the d-tree should not be split into too many branches
-
-	# but I fount that we can increase the number of the n_estimators
-	# which is the number of d-tree,
-	# max_depth=15, n_estimators=200 is the best configuration in my computer...
-	model = RandomForestClassifier(n_jobs=-1, max_depth=15, n_estimators=200, warm_start=False)
+	
+	model = GradientBoostingClassifier(n_estimators=200, learning_rate=1.0, max_depth=10, warm_start=True)
 	model.fit(train_x, train_y)
-	# modelFile = 'data/RF.model'
-	# joblib.dump(model, modelFile)
 	print(model)
 
-	utils.predict_and_save(test_x, model, 'results/result_RF.csv', blockSize=5000)
+	utils.predict_and_save(test_x, model, 'results/result_GBT.csv', blockSize=5000)

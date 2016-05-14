@@ -11,7 +11,7 @@ using namespace std;
 
 const string CATEGORIES_String = "ARSON,ASSAULT,BAD CHECKS,BRIBERY,BURGLARY,DISORDERLY CONDUCT,DRIVING UNDER THE INFLUENCE,DRUG/NARCOTIC,DRUNKENNESS,EMBEZZLEMENT,EXTORTION,FAMILY OFFENSES,FORGERY/COUNTERFEITING,FRAUD,GAMBLING,KIDNAPPING,LARCENY/THEFT,LIQUOR LAWS,LOITERING,MISSING PERSON,NON-CRIMINAL,OTHER OFFENSES,PORNOGRAPHY/OBSCENE MAT,PROSTITUTION,RECOVERED VEHICLE,ROBBERY,RUNAWAY,SECONDARY CODES,SEX OFFENSES FORCIBLE,SEX OFFENSES NON FORCIBLE,STOLEN PROPERTY,SUICIDE,SUSPICIOUS OCC,TREA,TRESPASS,VANDALISM,VEHICLE THEFT,WARRANTS,WEAPON LAWS";
 const string DaysInAWeek[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-const int TrainDataSize = 878049, TestDataSize = 884262, Row_size = 8;
+const int TrainDataSize = 878049, TestDataSize = 884262, Row_size = 10;
 
 vector<string> splite(const string& s);
 inline int str2int(const string& s);
@@ -25,11 +25,24 @@ map<string, int> PdDistricts;
 map<string, int> Categories;
 map<string, int> WeekDays;
 void Init();
+map<vector<int>, string> mmdays;
+string status = "Training";
 
 int main() {
 	Init();
 	readTrainData("data/train_data.txt");
+
+	status = "Testing";
+
 	readTestData("data/test_data.txt");
+
+	for (map<vector<int>, string>::iterator it = mmdays.begin(); it != mmdays.end(); ++it) {
+		vector<int> tmp = it->first;
+		for (int i = 0; i < tmp.size(); ++i)
+			printf("%d,", tmp[i]);
+		printf("%s\n", it->second.data());
+	}
+
 	return 0;
 }
 
@@ -84,6 +97,27 @@ inline double str2double(const string& s) {
 	return num;
 }
 
+bool isLeapYear(int year) {
+	if (year % 4 != 0)
+		return false;
+	if (year % 100 != 0)
+		return true;
+	return year % 400 == 0;
+}
+
+
+int date_to_day(int year, int month, int day) {
+	int day_in_months[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+	if (isLeapYear(year))
+		++day_in_months[2];
+
+	int ans = 0;
+	for (int i = 1; i < month; ++i)
+		ans += day_in_months[i];
+
+	return ans + day;
+}
+
 
 /*
 Original string format like: 2015-05-13 01:02:05
@@ -94,19 +128,22 @@ See index:
 2015-05-13 01:02:05
 */
 vector<int> time_to_int(const string& s) {
-	vector<int> ans(4);
+	vector<int> ans(6);
 	ans[0] = str2int(s.substr(0, 4));
 	ans[1] = str2int(s.substr(5, 2));
 	ans[2] = str2int(s.substr(8, 2));
-	int hour = str2int(s.substr(11, 2));
-	int minute = str2int(s.substr(14, 2));
-	/*int second = str2int(s.substr(17, 2));
-	ans[3] = 3600 * hour + 60 * minute + second;*/
 
-	// maybe the seconds is not rather important
-	if (minute >= 30)
-		++hour;
-	ans[3] = hour;
+	vector<int> tmp = vector<int>(ans.begin(), ans.begin()+3);
+	map<vector<int>, string>::iterator it = mmdays.find(tmp);
+	if (it != mmdays.end() && it->second != status)
+		mmdays[tmp] = "both";
+	else
+		mmdays[tmp] = status;
+
+	ans[3] = str2int(s.substr(11, 2));
+	ans[4] = str2int(s.substr(14, 2));
+	ans[5] = date_to_day(ans[0], ans[1], ans[2]) / 7 % 2;	// 奇数周(0)还是偶数周(1)
+
 
 	return ans;
 }

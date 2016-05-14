@@ -12,7 +12,7 @@ from sklearn.externals import joblib
 import utils
 
 
-
+# this model is not suitable for this question...
 if __name__ == '__main__':
 	# get X and y, the return data is all numpy 2d array
 	train_x, train_y = utils.loadDataHelper('data/train_data.txt')
@@ -38,10 +38,11 @@ if __name__ == '__main__':
 	# but I fount that we can increase the number of the n_estimators
 	# which is the number of d-tree,
 	# max_depth=15, n_estimators=200 is the best configuration in my computer...
-	model = RandomForestClassifier(n_jobs=-1, max_depth=15, n_estimators=200, warm_start=False)
+	# model = AdaBoostClassifier()
+	model = AdaBoostClassifier(n_estimators=200)
 	model.fit(train_x, train_y)
 	# modelFile = 'data/RF.model'
 	# joblib.dump(model, modelFile)
 	print(model)
 
-	utils.predict_and_save(test_x, model, 'results/result_RF.csv', blockSize=5000)
+	utils.predict_and_save(test_x, model, 'results/result_Ada.csv', blockSize=50000)
