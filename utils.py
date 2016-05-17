@@ -18,7 +18,7 @@ def loadDataHelper(fileName):
 			line = f.readline()
 			if not line:
 				break
-			line = line.split(',')
+			line = line.split(' ')
 			y[index] = int(line[0])
 			size = len(line)
 			tmp_x = range(1, size)
