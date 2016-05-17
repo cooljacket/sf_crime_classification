@@ -1,0 +1,13 @@
+*
+zips/
+*.csv
+*.txt
+*.pyc
+out
+data/
+!*.cpp
+!*.py
+!*.md
+!data/train.csv
+!data/test.csv
+!.gitignore
