@@ -47,7 +47,7 @@ def saveResultHelper(f, probs, start_id=0):
 		f.write('%d' % int(id))
 		id += 1
 		for pp in p:
-			f.write(',{0:.3}'.format(pp))
+			f.write(',{0:.4}'.format(pp))
 		f.write('\n')
 
 

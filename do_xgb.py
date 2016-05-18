@@ -15,7 +15,7 @@ import utils
 
 if __name__ == '__main__':
 	# get X and y, the return data is all numpy 2d array
-	train_x, train_y = utils.loadDataHelper('data/train_data.txt')
+	train_x, train_y = utils.loadDataHelper('data/train_data_rs.txt')
 	test_x, test_id = utils.loadDataHelper('data/test_data.txt')
 	# test_x = test_x[0:3000:]
 	print('train size: %d %d' % (len(train_x), len(train_y)))
@@ -25,21 +25,11 @@ if __name__ == '__main__':
 	train_x = preprocessing.scale(train_x)
 	test_x = preprocessing.scale(test_x)
 
-	# I found that it is better to use the above functions to dl normalization!!!
-	# utils.Min_Max_Norm(train_x)
-	# utils.Min_Max_Norm(test_x)
-	utils.display(train_x)
 	print('begin')
 
-	# max_depth is not suitable to be large than 10, but should not less than 7?
-	# maybe because the number of features is too less, 
-	# and the d-tree should not be split into too many branches
-
-	# but I fount that we can increase the number of the n_estimators
-	# which is the number of d-tree,
-	# max_depth=15, n_estimators=200 is the best configuration in my computer...
-	model = RandomForestClassifier(n_jobs=-1, max_depth=10, n_estimators=200, warm_start=False)
+	model = xgb.XGBClassifier(max_depth=3, n_estimators=300, learning_rate=0.05)
 	model.fit(train_x, train_y)
 	print(model)
 
-	utils.predict_and_save(test_x, model, 'results/result_RF.csv', blockSize=5000)
+	probs = model.predict(test_x)
+	utils.saveResultHelper('results/result_xgb.csv', probs)
